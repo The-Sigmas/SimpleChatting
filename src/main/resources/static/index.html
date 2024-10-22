@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Websockets</title>
+</head>
+<body>
+<h1>Serverzeit:</h1>
+<p>
+<span id="server-time"></span>
+</p><p>
+<span id="socket-error"></span>
+</p>
+<div>
+    <input type="text">
+    <button type="button">Send</button>
+</div>
+<div>
+    <ul id="chats">
+        
+    </ul>
+</div>
+<script>
+    function addChat(message) {
+        var ul = document.getElementById("chats");
+        var li = document.createElement("li");
+        li.appendChild(document.createTextNode(message));
+        ul.appendChild(li);
+    }
+
+	  let server = 'ws://localhost:8080/time'
+    let chat = 'ws://localhost:8080/chat'
+
+    let username = prompt("Whats your username?")
+
+    ws = new WebSocket(server)
+    chat = new WebSocket(chat)
+    // recieve msg with server time and put it to the html 
+    ws.onmessage = function(data) {
+        let el = document.getElementById('server-time')
+        el.innerText = data.data
+    }
+    // Listen for possible errors (optional)
+    ws.addEventListener('error', (event) => {
+        let el = document.getElementById('socket-error')
+        el.innerText = 'WebSocket error @ server: '+server+' !'
+    })
+
+    chat.onmessage = function(data) {
+        addChat(data.data)
+    }
+
+    chat.onopen = (event) => {
+        chat.send(JSON.stringify({
+            from: username,
+            message: "Hi!"
+        }))
+    }
+</script>
+</body>
+</html>
