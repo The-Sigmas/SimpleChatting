@@ -12,8 +12,8 @@
 <span id="socket-error"></span>
 </p>
 <div>
-    <input type="text">
-    <button type="button">Send</button>
+    <input type="text" id="Text">
+    <button type="button" onclick="sendMessage()">Send</button>
 </div>
 <div>
     <ul id="chats">
@@ -53,7 +53,15 @@
     chat.onopen = (event) => {
         chat.send(JSON.stringify({
             from: username,
-            message: "Hi!"
+            message: "Hello there!"
+        }))
+    }
+
+    function sendMessage(){
+        var message = document.getElementById("Text").value
+        chat.send(JSON.stringify({
+            from: username,
+            message: message
         }))
     }
 </script>

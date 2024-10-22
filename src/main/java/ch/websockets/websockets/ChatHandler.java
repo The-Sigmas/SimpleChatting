@@ -1,5 +1,7 @@
 package ch.websockets.websockets;
 
+import org.json.*;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,6 +47,9 @@ public class ChatHandler extends TextWebSocketHandler {
         for(WebSocketSession webSocketSession : sessions) {
             try {
                 String receivedMessage = (String) message.getPayload();
+                
+                JSONObject jo = new JSONObject();
+                username = jo.getString("from");
                 webSocketSession.sendMessage(new TextMessage(username + ": " + receivedMessage));
             } catch (Exception ex) {
                 ex.printStackTrace();
