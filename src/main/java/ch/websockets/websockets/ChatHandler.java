@@ -1,5 +1,7 @@
 package ch.websockets.websockets;
 
+import org.json.*;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,21 +38,32 @@ public class ChatHandler extends TextWebSocketHandler {
     }
 
     @Override
-    public void handleTextMessage(WebSocketSession session, TextMessage message)
-        throws InterruptedException, IOException {
+    public void handleTextMessage(WebSocketSession session, TextMessage message) throws InterruptedException, IOException {
 
-        System.out.println("Recieved Message: " + message.getPayload());
+    System.out.println("Received Message: " + message.getPayload());
 
-        String username = "client";
-        for(WebSocketSession webSocketSession : sessions) {
-            try {
-                String receivedMessage = (String) message.getPayload();
-                webSocketSession.sendMessage(new TextMessage(username + ": " + receivedMessage));
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+    String username = "client";  // Default username if 'from' is not present
+
+    // Parse the received message from the client
+    String receivedMessage = message.getPayload();
+
+    try {
+        // Parse the received message as JSON
+        JSONObject jo = new JSONObject(receivedMessage);
+
+        // Extract the 'from' field if it exists
+        if (jo.has("from")) {
+            username = jo.getString("from");
         }
+
+        // Send the message to all connected clients
+        for (WebSocketSession webSocketSession : sessions) {
+            webSocketSession.sendMessage(new TextMessage(username + ": " + jo.getString("message")));
+        }
+    } catch (JSONException ex) {
+        ex.printStackTrace();
     }
+}
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
