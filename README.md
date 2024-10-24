@@ -14,4 +14,4 @@ Just connect to `localhost:8080/time` or `localhost:8080/chat`.
 Feel free to use the HTML file inside `src/main/resources/static/index.html` for a basic implementation!
 
 ## Screenshots
-![Screenshot]("src/main/resources/Screenshot.png")
+[Screenshot]("src/main/resources/Screenshot.png")
