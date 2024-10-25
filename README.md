@@ -15,3 +15,5 @@ Feel free to use the HTML file inside `src/main/resources/static/index.html` for
 
 ## Screenshots
 ![Screenshot](src/main/resources/Screenshot.png)
+
+### Project made by [Max](https://github.com/maxhaswiss) and [Bledion](https://github.com/bomba-cat)
